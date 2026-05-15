@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 env:
-  AZURE_WEBAPP_NAME: hospital-ai-agent-mvp
+  AZURE_WEBAPP_NAME: hospitalagent
   AZURE_WEBAPP_PACKAGE_PATH: .
   NODE_VERSION: 20.x
 

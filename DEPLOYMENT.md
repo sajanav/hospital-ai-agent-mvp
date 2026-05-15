@@ -48,7 +48,7 @@ AZURE_TENANT_ID=<Azure tenant ID>
 AZURE_SUBSCRIPTION_ID=<Azure subscription ID>
 ```
 
-5. Edit `.github/workflows/azure-app-service.yml` and set:
+5. Edit `.github/workflows/main_hospitalagent.yml` and set:
 
 ```text
 AZURE_WEBAPP_NAME: your-actual-azure-app-service-name
