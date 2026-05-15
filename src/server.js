@@ -25,7 +25,8 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, {
         status: "ok",
         mode: process.env.OPENAI_API_KEY ? "openai" : "mock",
-        accessCodeRequired: Boolean(process.env.APP_ACCESS_CODE)
+        accessCodeRequired: Boolean(process.env.APP_ACCESS_CODE),
+        openAiKeyConfigured: Boolean(process.env.OPENAI_API_KEY)
       });
     }
 
@@ -72,7 +73,16 @@ async function handleDraft(req, res, summaryType) {
   const body = await readJson(req);
   assertEncounterRequest(body, summaryType);
 
-  const result = await draftSummary(summaryType, body);
+  let result;
+  try {
+    result = await draftSummary(summaryType, body);
+  } catch (error) {
+    return sendJson(res, 502, {
+      error: error.message || "AI draft generation failed.",
+      provider: "openai"
+    });
+  }
+
   const draftId = `draft_${randomUUID()}`;
   const record = {
     draftId,
