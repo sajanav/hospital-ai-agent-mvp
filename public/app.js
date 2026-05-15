@@ -54,7 +54,7 @@ form.addEventListener("submit", async (event) => {
       headers: requestHeaders(),
       body: JSON.stringify(buildPayload(summaryType))
     });
-    const payload = await response.json();
+    const payload = await readJsonResponse(response);
 
     if (!response.ok) {
       throw new Error(payload.error || "Draft request failed.");
@@ -87,7 +87,7 @@ approveButton.addEventListener("click", async () => {
       headers: requestHeaders(),
       body: JSON.stringify({ approvedBy: "doctor.local" })
     });
-    const payload = await response.json();
+    const payload = await readJsonResponse(response);
 
     if (!response.ok) {
       throw new Error(payload.error || "Approval failed.");
@@ -103,7 +103,7 @@ approveButton.addEventListener("click", async () => {
 async function loadHealth() {
   try {
     const response = await fetch("/health");
-    const health = await response.json();
+    const health = await readJsonResponse(response);
     modeLabel.textContent = `Server ${health.status} | ${health.mode} mode`;
     if (health.accessCodeRequired && !accessCode) {
       accessScreen.classList.remove("hidden");
@@ -240,4 +240,18 @@ function requestHeaders() {
   }
 
   return headers;
+}
+
+async function readJsonResponse(response) {
+  const body = await response.text();
+
+  try {
+    return body ? JSON.parse(body) : {};
+  } catch {
+    const preview = body.replace(/\s+/g, " ").slice(0, 180);
+    throw new Error(
+      `Server returned ${response.status} ${response.statusText || ""} instead of JSON. ` +
+        `This usually means Azure returned an HTML error/login/default page. Preview: ${preview}`
+    );
+  }
 }

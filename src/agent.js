@@ -42,7 +42,7 @@ export async function draftSummary(summaryType, request) {
     })
   });
 
-  const payload = await response.json();
+  const payload = await readJsonResponse(response);
   if (!response.ok) {
     throw new Error(payload.error?.message || `OpenAI request failed with HTTP ${response.status}`);
   }
@@ -74,4 +74,18 @@ function extractOutputText(payload) {
   }
 
   return "";
+}
+
+async function readJsonResponse(response) {
+  const body = await response.text();
+
+  try {
+    return body ? JSON.parse(body) : {};
+  } catch {
+    const preview = body.replace(/\s+/g, " ").slice(0, 180);
+    throw new Error(
+      `OpenAI request returned ${response.status} ${response.statusText || ""} instead of JSON. ` +
+        `Preview: ${preview}`
+    );
+  }
 }
