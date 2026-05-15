@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hospital AI Documentation Agent</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div id="access-screen" class="access-screen hidden">
+      <form id="access-form" class="access-panel">
+        <h1>Private MVP</h1>
+        <p>Enter the access code to generate summaries.</p>
+        <label>
+          <span>Access code</span>
+          <input name="accessCode" type="password" autocomplete="off" required>
+        </label>
+        <button type="submit">Continue</button>
+      </form>
+    </div>
+
+    <main class="app-shell">
+      <section class="workspace">
+        <form id="summary-form" class="entry-panel">
+          <div class="topbar">
+            <div>
+              <h1>Clinical Summary Draft</h1>
+              <p id="mode-label">Checking server...</p>
+            </div>
+            <div class="summary-switch" aria-label="Summary type">
+              <label>
+                <input type="radio" name="summaryType" value="discharge" checked>
+                <span>Discharge</span>
+              </label>
+              <label>
+                <input type="radio" name="summaryType" value="insurance">
+                <span>Insurance</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              <span>Patient name</span>
+              <input name="name" autocomplete="name" required placeholder="Full name">
+            </label>
+
+            <label>
+              <span>Age</span>
+              <input name="age" type="number" min="0" max="130" required placeholder="54">
+            </label>
+
+            <label>
+              <span>Gender</span>
+              <select name="sex" required>
+                <option value="">Select</option>
+                <option>Female</option>
+                <option>Male</option>
+                <option>Other</option>
+                <option>Not specified</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Patient ID</span>
+              <input name="patientId" placeholder="P-10001">
+            </label>
+
+            <label>
+              <span>Admission date</span>
+              <input name="admissionDate" type="date">
+            </label>
+
+            <label>
+              <span>Discharge date</span>
+              <input name="dischargeDate" type="date" required>
+            </label>
+
+            <label class="wide">
+              <span>Diagnosis</span>
+              <input name="diagnosis" required placeholder="Community-acquired pneumonia">
+            </label>
+
+            <label>
+              <span>Doctor name</span>
+              <input name="doctorName" required placeholder="Dr. Ananya Rao">
+            </label>
+
+            <label>
+              <span>Hospital name</span>
+              <input name="hospitalName" required placeholder="City Care Hospital">
+            </label>
+
+            <label>
+              <span>Seal text</span>
+              <input name="sealText" placeholder="Hospital seal / registration no.">
+            </label>
+
+            <label class="wide">
+              <span>Investigations</span>
+              <textarea name="investigations" rows="3" placeholder="Chest X-ray: right lower-zone consolidation&#10;CBC: leukocytosis improving"></textarea>
+            </label>
+
+            <label class="wide">
+              <span>Hospital course</span>
+              <textarea name="hospitalCourse" rows="4" required placeholder="Treatment given, response, discharge condition"></textarea>
+            </label>
+
+            <label class="wide">
+              <span>Discharge medicines</span>
+              <textarea name="medications" rows="3" placeholder="One medicine per line"></textarea>
+            </label>
+
+            <label class="wide">
+              <span>Follow-up advice</span>
+              <textarea name="followUpAdvice" rows="3" placeholder="Review after 7 days&#10;Return if symptoms worsen"></textarea>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="sample-button">Fill Sample</button>
+            <button type="submit" id="draft-button">Generate Draft</button>
+          </div>
+        </form>
+
+        <section class="review-panel" aria-live="polite">
+          <div class="review-header">
+            <div>
+              <h2>Doctor Review</h2>
+              <p id="draft-status">No draft yet</p>
+            </div>
+            <button type="button" id="approve-button" disabled>Approve</button>
+          </div>
+
+          <div id="empty-state" class="empty-state">
+            Enter patient details and generate a draft.
+          </div>
+
+          <div id="result" class="result hidden">
+            <section>
+              <h3>Summary</h3>
+              <p id="clinical-summary"></p>
+            </section>
+
+            <section class="columns">
+              <div>
+                <h3>Diagnoses</h3>
+                <ul id="diagnoses"></ul>
+              </div>
+              <div>
+                <h3>Medicines</h3>
+                <ul id="medications"></ul>
+              </div>
+            </section>
+
+            <section class="columns">
+              <div>
+                <h3>Investigations</h3>
+                <ul id="investigations"></ul>
+              </div>
+              <div>
+                <h3>Follow-up</h3>
+                <ul id="follow-up"></ul>
+              </div>
+            </section>
+
+            <section>
+              <h3>Insurance Justification</h3>
+              <p id="insurance-justification"></p>
+            </section>
+
+            <section>
+              <h3>Missing Information</h3>
+              <ul id="missing-info"></ul>
+            </section>
+
+            <section>
+              <h3>Source References</h3>
+              <ul id="source-references" class="references"></ul>
+            </section>
+
+            <section class="attestation">
+              <div>
+                <h3>Doctor</h3>
+                <p id="doctor-name"></p>
+              </div>
+              <div>
+                <h3>Hospital</h3>
+                <p id="hospital-name"></p>
+              </div>
+              <div class="signature-box">
+                <h3>Signature</h3>
+                <p id="signature-name"></p>
+              </div>
+              <div class="seal-box">
+                <h3>Seal</h3>
+                <p id="seal-text"></p>
+              </div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

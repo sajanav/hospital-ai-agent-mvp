@@ -1,0 +1,38 @@
+{
+  "patient": {
+    "patientId": "P-10001",
+    "name": "Sample Patient",
+    "age": 54,
+    "sex": "Female"
+  },
+  "encounter": {
+    "encounterId": "E-90001",
+    "admissionDate": "2026-05-01",
+    "dischargeDate": "2026-05-05"
+  },
+  "clinician": {
+    "doctorName": "Dr. Ananya Rao",
+    "hospitalName": "City Care Hospital",
+    "signatureName": "Dr. Ananya Rao",
+    "sealText": "City Care Hospital | Reg. No. CCH-2026"
+  },
+  "sources": {
+    "admissionReason": "Admitted with fever, productive cough, and radiological evidence of pneumonia requiring inpatient IV antibiotics and monitoring.",
+    "diagnoses": [
+      "Community-acquired pneumonia"
+    ],
+    "investigations": [
+      "Chest X-ray: right lower-zone consolidation",
+      "CBC: leukocytosis on admission"
+    ],
+    "procedures": [],
+    "progressNotes": "Patient required inpatient treatment with IV antibiotics, nebulization, monitoring of vitals, and supportive care. Clinical condition improved before discharge.",
+    "medicationsOnDischarge": [
+      "Amoxicillin/clavulanate as prescribed for 5 days"
+    ],
+    "followUpAdvice": [
+      "Review after 7 days"
+    ],
+    "billingNotes": "Room, nursing, investigations, pharmacy, and doctor visit charges as per hospital bill."
+  }
+}

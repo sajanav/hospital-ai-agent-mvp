@@ -1,0 +1,42 @@
+{
+  "patient": {
+    "patientId": "P-10001",
+    "name": "Sample Patient",
+    "age": 54,
+    "sex": "Female"
+  },
+  "encounter": {
+    "encounterId": "E-90001",
+    "admissionDate": "2026-05-01",
+    "dischargeDate": "2026-05-05"
+  },
+  "clinician": {
+    "doctorName": "Dr. Ananya Rao",
+    "hospitalName": "City Care Hospital",
+    "signatureName": "Dr. Ananya Rao",
+    "sealText": "City Care Hospital | Reg. No. CCH-2026"
+  },
+  "sources": {
+    "chiefComplaints": [
+      "Fever for 3 days",
+      "Productive cough"
+    ],
+    "diagnoses": [
+      "Community-acquired pneumonia"
+    ],
+    "investigations": [
+      "Chest X-ray: right lower-zone consolidation",
+      "CBC: leukocytosis on admission, improving by discharge"
+    ],
+    "procedures": [],
+    "hospitalCourse": "Patient was treated with IV antibiotics, antipyretics, nebulization, and supportive care. Symptoms improved and oxygen saturation remained stable on room air before discharge.",
+    "medicationsOnDischarge": [
+      "Amoxicillin/clavulanate as prescribed for 5 days",
+      "Paracetamol as needed for fever"
+    ],
+    "followUpAdvice": [
+      "Pulmonology/medicine follow-up after 7 days",
+      "Return immediately for breathlessness, persistent fever, chest pain, or worsening cough"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "NODE_ENV",
+    "value": "production",
+    "slotSetting": false
+  },
+  {
+    "name": "OPENAI_MODEL",
+    "value": "gpt-5.2",
+    "slotSetting": false
+  },
+  {
+    "name": "OPENAI_API_KEY",
+    "value": "replace-with-rotated-key-in-azure-portal",
+    "slotSetting": true
+  },
+  {
+    "name": "APP_ACCESS_CODE",
+    "value": "replace-with-private-code",
+    "slotSetting": true
+  },
+  {
+    "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+    "value": "true",
+    "slotSetting": false
+  }
+]
