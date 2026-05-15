@@ -1,4 +1,4 @@
-name: Deploy Hospital AI Agent to Azure App Service
+name: Build and deploy Node.js app to Azure Web App - hospitalagent
 
 on:
   push:
@@ -12,7 +12,6 @@ permissions:
 
 env:
   AZURE_WEBAPP_NAME: hospitalagent
-  AZURE_WEBAPP_PACKAGE_PATH: .
   NODE_VERSION: 20.x
 
 jobs:
@@ -23,7 +22,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -38,12 +37,13 @@ jobs:
       - name: Log in to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_37D8153909ED4223A22008E8988E2EAA }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_84910EF4E4C44AB5B58B23CE1BF2DE78 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7D255A1D9C0247C1B7E43BAF2A586E3F }}
 
-      - name: Deploy to Azure App Service
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          slot-name: Production
+          package: .
