@@ -2,7 +2,7 @@
 
 This MVP is prepared for Azure App Service as a Node.js web app.
 
-## Option A: Azure App Service + GitHub Actions
+## Option A: Azure App Service + GitHub Actions With OpenID Connect
 
 Use this when `hospital-ai-agent-mvp` is its own GitHub repository.
 
@@ -26,12 +26,26 @@ APP_ACCESS_CODE=<private code you share separately>
 SCM_DO_BUILD_DURING_DEPLOYMENT=true
 ```
 
-3. In Azure Portal, download the App Service publish profile.
-
-4. In GitHub, add this repository secret:
+3. Configure GitHub deployment from Azure Portal:
 
 ```text
-AZURE_WEBAPP_PUBLISH_PROFILE=<contents of the downloaded publish profile>
+App Service -> Deployment Center
+Source: GitHub
+Authentication type: User-assigned identity / OpenID Connect
+Organization: your GitHub account
+Repository: hospital-ai-agent-mvp
+Branch: main
+Runtime stack: Node
+```
+
+Azure will create or ask you to select an identity and federated credential. This is the recommended path when basic authentication is disabled.
+
+4. In GitHub, add these repository secrets if Azure did not add them automatically:
+
+```text
+AZURE_CLIENT_ID=<Azure app/client ID>
+AZURE_TENANT_ID=<Azure tenant ID>
+AZURE_SUBSCRIPTION_ID=<Azure subscription ID>
 ```
 
 5. Edit `.github/workflows/azure-app-service.yml` and set:
@@ -49,6 +63,10 @@ https://your-actual-azure-app-service-name.azurewebsites.net/
 ```
 
 Send the `APP_ACCESS_CODE` separately.
+
+### If Azure Says Basic Authentication Is Disabled
+
+That is okay. Do not use **Get publish profile**. Publish profiles use basic authentication. This project is configured for OpenID Connect through `azure/login@v2`, which uses short-lived Azure tokens instead of storing a publish profile in GitHub.
 
 ## Option B: Azure App Service Custom Container
 
