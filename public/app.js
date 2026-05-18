@@ -11,6 +11,7 @@ const result = document.querySelector("#result");
 
 let currentDraftId = "";
 let accessCode = sessionStorage.getItem("hospital-ai-access-code") || "";
+let admissionReasonEdited = false;
 
 loadHealth();
 
@@ -25,20 +26,34 @@ sampleButton.addEventListener("click", () => {
   form.name.value = "Sample Patient";
   form.age.value = "54";
   form.sex.value = "Female";
-  form.patientId.value = "P-10001";
-  form.admissionDate.value = "2026-05-01";
-  form.dischargeDate.value = "2026-05-05";
+  form.ipNumber.value = "IP-10001";
+  form.dateOfAdmission.value = "2026-05-01";
+  form.dateOfSurgery.value = "2026-05-02";
+  form.dateOfDischarge.value = "2026-05-05";
   form.diagnosis.value = "Community-acquired pneumonia";
+  form.procedures.value = "Nebulization and supportive respiratory care";
   form.doctorName.value = "Dr. Ananya Rao";
   form.hospitalName.value = "City Care Hospital";
   form.sealText.value = "City Care Hospital | Reg. No. CCH-2026";
   form.investigations.value = "Chest X-ray: right lower-zone consolidation\nCBC: leukocytosis improving";
+  form.generalExamination.value = "Patient conscious, oriented, afebrile at discharge, vitals stable, no cyanosis or pedal edema.";
+  form.localExamination.value = "Respiratory examination showed improving air entry with reduced crepitations over the right lower zone.";
   form.hospitalCourse.value =
     "Patient was treated with IV antibiotics, antipyretics, nebulization, and supportive care. Symptoms improved and oxygen saturation remained stable on room air before discharge.";
   form.medications.value = "Amoxicillin/clavulanate as prescribed for 5 days\nParacetamol as needed for fever";
   form.followUpAdvice.value =
     "Pulmonology/medicine follow-up after 7 days\nReturn immediately for breathlessness, persistent fever, chest pain, or worsening cough";
+  form.reviewAfterDays.value = "7";
+  admissionReasonEdited = false;
+  syncAdmissionReason();
 });
+
+form.admissionReason.addEventListener("input", () => {
+  admissionReasonEdited = true;
+});
+
+form.diagnosis.addEventListener("input", syncAdmissionReason);
+form.hospitalCourse.addEventListener("input", syncAdmissionReason);
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -119,25 +134,31 @@ function buildPayload(summaryType) {
   const encounterId = `E-${Date.now()}`;
   const commonSources = {
     diagnoses: lines(formData.get("diagnosis")),
+    procedures: lines(formData.get("procedures")),
     investigations: lines(formData.get("investigations")),
+    admissionReason: text(formData.get("admissionReason")),
+    generalExamination: text(formData.get("generalExamination")),
+    localExamination: text(formData.get("localExamination")),
     hospitalCourse: text(formData.get("hospitalCourse")),
     progressNotes: text(formData.get("hospitalCourse")),
     medicationsOnDischarge: lines(formData.get("medications")),
-    followUpAdvice: lines(formData.get("followUpAdvice"))
+    followUpAdvice: lines(formData.get("followUpAdvice")),
+    reviewAfterDays: text(formData.get("reviewAfterDays"))
   };
 
   return {
     summaryType,
     patient: {
-      patientId: text(formData.get("patientId")) || `P-${Date.now()}`,
+      ipNumber: text(formData.get("ipNumber")) || `IP-${Date.now()}`,
       name: text(formData.get("name")),
       age: text(formData.get("age")),
       sex: text(formData.get("sex"))
     },
     encounter: {
       encounterId,
-      admissionDate: text(formData.get("admissionDate")),
-      dischargeDate: text(formData.get("dischargeDate"))
+      dateOfAdmission: text(formData.get("dateOfAdmission")),
+      dateOfSurgery: text(formData.get("dateOfSurgery")),
+      dateOfDischarge: text(formData.get("dateOfDischarge"))
     },
     clinician: {
       doctorName: text(formData.get("doctorName")),
@@ -145,13 +166,7 @@ function buildPayload(summaryType) {
       signatureName: text(formData.get("doctorName")),
       sealText: text(formData.get("sealText"))
     },
-    sources: {
-      ...commonSources,
-      admissionReason:
-        summaryType === "insurance"
-          ? `Admitted for ${text(formData.get("diagnosis"))}. ${text(formData.get("hospitalCourse"))}`
-          : undefined
-    }
+    sources: commonSources
   };
 }
 
@@ -165,15 +180,39 @@ function renderDraft(payload) {
   document.querySelector("#insurance-justification").textContent =
     draft.insuranceJustification || "Not applicable.";
   renderList("#diagnoses", draft.diagnoses);
+  renderList("#procedures", draft.procedures);
   renderList("#medications", draft.medicationsOnDischarge);
   renderList("#investigations", draft.investigations);
   renderList("#follow-up", draft.followUpAdvice);
+  document.querySelector("#review-after-days").textContent = draft.reviewAfterDays || "Not available in record.";
+  document.querySelector("#general-examination").textContent = draft.generalExamination || "Not available in record.";
+  document.querySelector("#local-examination").textContent = draft.localExamination || "Not available in record.";
   renderList("#missing-info", draft.missingInformation, "No missing information flagged.");
   renderReferences(draft.sourceReferences);
   document.querySelector("#doctor-name").textContent = clinician.doctorName || "Not provided.";
   document.querySelector("#hospital-name").textContent = clinician.hospitalName || "Not provided.";
   document.querySelector("#signature-name").textContent = clinician.signatureName || clinician.doctorName || "Not provided.";
   document.querySelector("#seal-text").textContent = clinician.sealText || clinician.hospitalName || "Not provided.";
+}
+
+function syncAdmissionReason() {
+  if (admissionReasonEdited) {
+    return;
+  }
+
+  const diagnosis = text(form.diagnosis.value);
+  const course = text(form.hospitalCourse.value);
+  const parts = [];
+
+  if (diagnosis) {
+    parts.push(`Admitted for ${diagnosis}.`);
+  }
+
+  if (course) {
+    parts.push(course);
+  }
+
+  form.admissionReason.value = parts.join(" ");
 }
 
 function renderList(selector, items, emptyText = "Not available in record.") {

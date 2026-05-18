@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hospital AI Documentation Agent</title>
+    <title>Najath Hospital AI Documentation Agent</title>
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
     <div id="access-screen" class="access-screen hidden">
       <form id="access-form" class="access-panel">
-        <h1>Private MVP</h1>
+        <h1>Najath Hospital</h1>
         <p>Enter the access code to generate summaries.</p>
         <label>
           <span>Access code</span>
@@ -20,6 +20,14 @@
     </div>
 
     <main class="app-shell">
+      <header class="hospital-header">
+        <div>
+          <p>Najath Super Speciality Hospital</p>
+          <h1>Clinical Documentation Agent</h1>
+        </div>
+        <span>Doctor reviewed summaries</span>
+      </header>
+
       <section class="workspace">
         <form id="summary-form" class="entry-panel">
           <div class="topbar">
@@ -62,23 +70,33 @@
             </label>
 
             <label>
-              <span>Patient ID</span>
-              <input name="patientId" placeholder="P-10001">
+              <span>IP Number</span>
+              <input name="ipNumber" placeholder="IP-10001">
             </label>
 
             <label>
-              <span>Admission date</span>
-              <input name="admissionDate" type="date">
+              <span>Date of Admission</span>
+              <input name="dateOfAdmission" type="date">
             </label>
 
             <label>
-              <span>Discharge date</span>
-              <input name="dischargeDate" type="date" required>
+              <span>Date of Surgery</span>
+              <input name="dateOfSurgery" type="date">
+            </label>
+
+            <label>
+              <span>Date of Discharge</span>
+              <input name="dateOfDischarge" type="date" required>
             </label>
 
             <label class="wide">
               <span>Diagnosis</span>
               <input name="diagnosis" required placeholder="Community-acquired pneumonia">
+            </label>
+
+            <label class="wide">
+              <span>Procedure</span>
+              <textarea name="procedures" rows="3" placeholder="One procedure per line"></textarea>
             </label>
 
             <label>
@@ -102,6 +120,21 @@
             </label>
 
             <label class="wide">
+              <span>Reason for Admission</span>
+              <textarea name="admissionReason" rows="3" placeholder="Auto-filled from diagnosis and hospital course; edit if needed"></textarea>
+            </label>
+
+            <label class="wide">
+              <span>General Examination</span>
+              <textarea name="generalExamination" rows="3" placeholder="General condition, vitals, pallor/icterus/cyanosis/clubbing/edema, systemic overview"></textarea>
+            </label>
+
+            <label class="wide">
+              <span>Local Examination</span>
+              <textarea name="localExamination" rows="3" placeholder="Relevant local findings, wound/site status, tenderness, swelling, range of motion, neurovascular status"></textarea>
+            </label>
+
+            <label class="wide">
               <span>Hospital course</span>
               <textarea name="hospitalCourse" rows="4" required placeholder="Treatment given, response, discharge condition"></textarea>
             </label>
@@ -114,6 +147,11 @@
             <label class="wide">
               <span>Follow-up advice</span>
               <textarea name="followUpAdvice" rows="3" placeholder="Review after 7 days&#10;Return if symptoms worsen"></textarea>
+            </label>
+
+            <label>
+              <span>Review After Days</span>
+              <input name="reviewAfterDays" type="number" min="0" max="365" placeholder="7">
             </label>
           </div>
 
@@ -148,8 +186,8 @@
                 <ul id="diagnoses"></ul>
               </div>
               <div>
-                <h3>Medicines</h3>
-                <ul id="medications"></ul>
+                <h3>Procedures</h3>
+                <ul id="procedures"></ul>
               </div>
             </section>
 
@@ -159,8 +197,30 @@
                 <ul id="investigations"></ul>
               </div>
               <div>
+                <h3>Medicines</h3>
+                <ul id="medications"></ul>
+              </div>
+            </section>
+
+            <section class="columns">
+              <div>
                 <h3>Follow-up</h3>
                 <ul id="follow-up"></ul>
+              </div>
+              <div>
+                <h3>Review After Days</h3>
+                <p id="review-after-days"></p>
+              </div>
+            </section>
+
+            <section class="columns">
+              <div>
+                <h3>General Examination</h3>
+                <p id="general-examination"></p>
+              </div>
+              <div>
+                <h3>Local Examination</h3>
+                <p id="local-examination"></p>
               </div>
             </section>
 

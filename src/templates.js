@@ -19,8 +19,8 @@ export function buildSystemPrompt(summaryType) {
 export function buildUserPrompt(summaryType, encounter) {
   return [
     `Create a ${summaryType} summary as structured JSON.`,
-    "For insurance summaries, emphasize admission reason, medical necessity, procedures, investigations, treatment given, and discharge status.",
-    "For discharge summaries, emphasize hospital course, final diagnosis, discharge medications, follow-up, and red flags.",
+    "For insurance summaries, emphasize reason for admission, medical necessity, procedures, investigations, treatment given, examination findings, and discharge status.",
+    "For discharge summaries, emphasize hospital course, final diagnosis, procedures, examination findings, discharge medications, review after days, follow-up, and red flags.",
     "Patient encounter JSON:",
     JSON.stringify({ ...encounter, summaryType }, null, 2)
   ].join("\n\n");
@@ -37,20 +37,25 @@ export function buildMockSummary(summaryType, request) {
       name: patient.name ?? "not available in record",
       age: stringify(patient.age),
       sex: patient.sex ?? "not available in record",
-      patientId: patient.patientId ?? "not available in record",
+      ipNumber: patient.ipNumber ?? "not available in record",
       encounterId: encounter.encounterId ?? "not available in record",
-      admissionDate: encounter.admissionDate ?? "not available in record",
-      dischargeDate: encounter.dischargeDate ?? "not available in record"
+      dateOfAdmission: encounter.dateOfAdmission ?? "not available in record",
+      dateOfSurgery: encounter.dateOfSurgery ?? "not available in record",
+      dateOfDischarge: encounter.dateOfDischarge ?? "not available in record"
     },
     clinicalSummary: mockClinicalSummary(summaryType, sources),
     diagnoses: asArray(sources.diagnoses),
     procedures: asArray(sources.procedures),
     investigations: asArray(sources.investigations),
+    admissionReason: stringify(sources.admissionReason),
+    generalExamination: stringify(sources.generalExamination),
+    localExamination: stringify(sources.localExamination),
     medicationsOnDischarge: asArray(sources.medicationsOnDischarge),
     followUpAdvice: asArray(sources.followUpAdvice),
+    reviewAfterDays: stringify(sources.reviewAfterDays),
     insuranceJustification:
       summaryType === "insurance"
-        ? "Draft justification should be completed from verified admission reason, treatment course, procedure notes, and investigation results."
+        ? "Draft justification should be completed from verified reason for admission, treatment course, procedure notes, examination findings, and investigation results."
         : "Not applicable for discharge summary.",
     missingInformation: collectMissingInformation(request),
     sourceReferences: Object.entries(sources)
@@ -83,12 +88,17 @@ function collectMissingInformation(request) {
     ["patient.name", request.patient?.name],
     ["patient.age", request.patient?.age],
     ["patient.sex", request.patient?.sex],
-    ["encounter.admissionDate", request.encounter?.admissionDate],
-    ["encounter.dischargeDate", request.encounter?.dischargeDate],
+    ["patient.ipNumber", request.patient?.ipNumber],
+    ["encounter.dateOfAdmission", request.encounter?.dateOfAdmission],
+    ["encounter.dateOfDischarge", request.encounter?.dateOfDischarge],
     ["sources.diagnoses", request.sources?.diagnoses],
+    ["sources.admissionReason", request.sources?.admissionReason],
+    ["sources.generalExamination", request.sources?.generalExamination],
+    ["sources.localExamination", request.sources?.localExamination],
     ["sources.hospitalCourse or sources.progressNotes", request.sources?.hospitalCourse || request.sources?.progressNotes],
     ["sources.medicationsOnDischarge", request.sources?.medicationsOnDischarge],
-    ["sources.followUpAdvice", request.sources?.followUpAdvice]
+    ["sources.followUpAdvice", request.sources?.followUpAdvice],
+    ["sources.reviewAfterDays", request.sources?.reviewAfterDays]
   ];
 
   for (const [label, value] of requiredPaths) {

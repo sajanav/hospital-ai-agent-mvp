@@ -1,14 +1,15 @@
 {
   "patient": {
-    "patientId": "P-10001",
+    "ipNumber": "IP-10001",
     "name": "Sample Patient",
     "age": 54,
     "sex": "Female"
   },
   "encounter": {
     "encounterId": "E-90001",
-    "admissionDate": "2026-05-01",
-    "dischargeDate": "2026-05-05"
+    "dateOfAdmission": "2026-05-01",
+    "dateOfSurgery": "2026-05-02",
+    "dateOfDischarge": "2026-05-05"
   },
   "clinician": {
     "doctorName": "Dr. Ananya Rao",
@@ -25,7 +26,11 @@
       "Chest X-ray: right lower-zone consolidation",
       "CBC: leukocytosis on admission"
     ],
-    "procedures": [],
+    "procedures": [
+      "Nebulization and supportive respiratory care"
+    ],
+    "generalExamination": "Patient conscious, oriented, febrile on admission, vitals monitored throughout stay.",
+    "localExamination": "Respiratory examination showed crepitations over the right lower zone, improving before discharge.",
     "progressNotes": "Patient required inpatient treatment with IV antibiotics, nebulization, monitoring of vitals, and supportive care. Clinical condition improved before discharge.",
     "medicationsOnDischarge": [
       "Amoxicillin/clavulanate as prescribed for 5 days"
@@ -33,6 +38,7 @@
     "followUpAdvice": [
       "Review after 7 days"
     ],
+    "reviewAfterDays": "7",
     "billingNotes": "Room, nursing, investigations, pharmacy, and doctor visit charges as per hospital bill."
   }
 }

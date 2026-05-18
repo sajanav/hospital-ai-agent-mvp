@@ -8,8 +8,12 @@ export const summarySchema = {
     "diagnoses",
     "procedures",
     "investigations",
+    "admissionReason",
+    "generalExamination",
+    "localExamination",
     "medicationsOnDischarge",
     "followUpAdvice",
+    "reviewAfterDays",
     "insuranceJustification",
     "missingInformation",
     "sourceReferences",
@@ -23,15 +27,16 @@ export const summarySchema = {
     patientSnapshot: {
       type: "object",
       additionalProperties: false,
-      required: ["name", "age", "sex", "patientId", "encounterId", "admissionDate", "dischargeDate"],
+      required: ["name", "age", "sex", "ipNumber", "encounterId", "dateOfAdmission", "dateOfSurgery", "dateOfDischarge"],
       properties: {
         name: { type: "string" },
         age: { type: "string" },
         sex: { type: "string" },
-        patientId: { type: "string" },
+        ipNumber: { type: "string" },
         encounterId: { type: "string" },
-        admissionDate: { type: "string" },
-        dischargeDate: { type: "string" }
+        dateOfAdmission: { type: "string" },
+        dateOfSurgery: { type: "string" },
+        dateOfDischarge: { type: "string" }
       }
     },
     clinicalSummary: { type: "string" },
@@ -47,6 +52,9 @@ export const summarySchema = {
       type: "array",
       items: { type: "string" }
     },
+    admissionReason: { type: "string" },
+    generalExamination: { type: "string" },
+    localExamination: { type: "string" },
     medicationsOnDischarge: {
       type: "array",
       items: { type: "string" }
@@ -55,6 +63,7 @@ export const summarySchema = {
       type: "array",
       items: { type: "string" }
     },
+    reviewAfterDays: { type: "string" },
     insuranceJustification: { type: "string" },
     missingInformation: {
       type: "array",

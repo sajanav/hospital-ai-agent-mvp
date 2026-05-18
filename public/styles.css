@@ -1,15 +1,17 @@
 :root {
   color-scheme: light;
-  --bg: #f5f7f9;
+  --bg: #d7d7d7;
   --panel: #ffffff;
-  --line: #d9e0e7;
-  --text: #18212b;
-  --muted: #5d6a78;
-  --primary: #116466;
-  --primary-dark: #0b4d4f;
-  --danger: #a83b32;
-  --soft: #eef4f4;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --line: #d8d8d8;
+  --text: #333333;
+  --muted: #666666;
+  --primary: #0aa5de;
+  --primary-dark: #07142e;
+  --accent: #7ac5ca;
+  --danger: #b00000;
+  --soft: #eefafa;
+  --link: #5b5b08;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 * {
@@ -39,8 +41,8 @@ body {
   padding: 22px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: 0 20px 60px rgba(24, 33, 43, 0.12);
+  border-radius: 2px;
+  box-shadow: 0 12px 34px rgba(7, 20, 46, 0.16);
 }
 
 .access-panel p {
@@ -56,7 +58,45 @@ textarea {
 
 .app-shell {
   min-height: 100vh;
-  padding: 24px;
+  padding: 0 24px 24px;
+}
+
+.hospital-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  max-width: 1440px;
+  min-height: 94px;
+  margin: 0 auto 18px;
+  padding: 18px 22px;
+  color: #ffffff;
+  background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 52%, var(--accent) 100%);
+  border-bottom: 5px solid #666666;
+}
+
+.hospital-header p {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.hospital-header h1 {
+  margin-top: 4px;
+  color: #ffffff;
+}
+
+.hospital-header span {
+  padding: 8px 12px;
+  color: #ffffff;
+  background: rgba(7, 20, 46, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .workspace {
@@ -71,7 +111,7 @@ textarea {
 .review-panel {
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   min-width: 0;
 }
 
@@ -111,7 +151,7 @@ h2 {
 h3 {
   font-size: 14px;
   margin-bottom: 10px;
-  color: var(--muted);
+  color: var(--primary-dark);
   text-transform: uppercase;
 }
 
@@ -126,7 +166,7 @@ h3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   overflow: hidden;
   min-width: 210px;
 }
@@ -149,7 +189,7 @@ h3 {
 }
 
 .summary-switch input:checked + span {
-  background: var(--primary);
+  background: var(--primary-dark);
   color: #ffffff;
 }
 
@@ -177,7 +217,7 @@ select,
 textarea {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 2px;
   color: var(--text);
   background: #ffffff;
 }
@@ -197,7 +237,7 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  outline: 2px solid rgba(17, 100, 102, 0.22);
+  outline: 2px solid rgba(10, 165, 222, 0.22);
   border-color: var(--primary);
 }
 
@@ -211,7 +251,7 @@ textarea:focus {
 
 button {
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 2px;
   height: 40px;
   padding: 0 16px;
   background: #ffffff;
@@ -248,7 +288,7 @@ button:disabled {
   color: var(--muted);
   background: var(--soft);
   border: 1px dashed var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   margin-top: 22px;
   text-align: center;
   padding: 24px;
@@ -292,7 +332,7 @@ li {
 
 .references li {
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 2px;
   padding: 10px;
 }
 
@@ -309,7 +349,7 @@ li {
 
 .attestation > div {
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 2px;
   min-height: 92px;
   padding: 12px;
 }
@@ -340,7 +380,13 @@ li {
 
 @media (max-width: 980px) {
   .app-shell {
-    padding: 14px;
+    padding: 0 14px 14px;
+  }
+
+  .hospital-header {
+    align-items: stretch;
+    flex-direction: column;
+    margin-bottom: 14px;
   }
 
   .workspace {
